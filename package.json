@@ -1,0 +1,25 @@
+{
+  "name": "721-fans-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "dependencies": {
+    "cross-fetch": "^3.0.6",
+    "ethers": "^5.0.23",
+    "jsonwebtoken": "^8.5.1",
+    "multihash": "^0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node": "^14.14.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "build": "tsc -p ./tsconfig.json",
+    "watch": "tsc -w -p ./tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC"
+}
