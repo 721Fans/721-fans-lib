@@ -5,6 +5,12 @@ export * from './types'
 
 const { FAN } = contracts
 
+export { ethers } from 'ethers'
+
+export * from './provider'
+export * from './metatx'
+export * from './utils'
+
 export {
   contracts,
   verifier,
