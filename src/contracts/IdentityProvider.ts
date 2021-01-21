@@ -19,7 +19,7 @@ export const getIdentityProvider = async (write = false, provider = getProvider(
 }
 
 export const getVerifiedAddress = async (uuid: string) => {
-  const identityProvider = await getIdentityProvider() // request with write access
+  const identityProvider = await getIdentityProvider()
   const address = await identityProvider.getAddress(uuid)
   const bn = BigNumber.from(address.toString())
   if (bn.toString() !== '0') {
