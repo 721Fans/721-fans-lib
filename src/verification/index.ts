@@ -1,6 +1,18 @@
 import { ethers } from 'ethers';
 import jwt from 'jsonwebtoken'
+import { getInjectedProvider } from '../provider';
 import { ChallengeData } from '../types';
+
+
+const getMetamaskSigner = () => {
+  const provider = getInjectedProvider()
+  const signer = provider.getSigner()
+  return signer
+}
+
+const getSigner = () => {
+  return getMetamaskSigner()
+}
 
 export const parseSignedStatement = (signedStatement: string) => {
   const parts = signedStatement.split(' ');
@@ -29,6 +41,12 @@ export const createProofStatement = (uuid: string, address: string, channel = 'T
   return `Verifying myself: I'm ${uuid} on ${channel} and own Ethereum address ${address}.`
 }
 
+export const userSignMessage = async (msg: string) => {
+  const signer = await getSigner()
+  const signature = await signer.signMessage(msg);
+  return signature;
+}
+
 export const verifyProof = async (username: string, address: string, channel = 'Twitter', signature: string) => {
   const originalMessage = createProofStatement(username, address, channel)
   return verifyMessage(originalMessage, signature)
@@ -41,13 +59,13 @@ export const verifyMessage = async (originalMessage: string, signature: string) 
   }
 }
 
-export const decodeChallengeToken = (token: string) => {
+export const decodeChallengeToken = (token: string) : null | ChallengeData => {
+  // @ts-ignore
   return jwt.decode(token)
 }
 
 export const createChallengeToken = async (payload: ChallengeData, secret: string) => {
-
-  let signedToken = jwt.sign(payload, secret, {
+  const signedToken = jwt.sign(payload, secret, {
     expiresIn: 60 * 60
   })
   // sign to know that challenge was indeed from server
