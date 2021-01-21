@@ -1,4 +1,5 @@
 import { ethers, BigNumber } from "ethers"
+import { keccak256 } from "ethers/lib/utils"
 
 import { configurations } from '../config'
 
@@ -25,4 +26,17 @@ export const getVerifiedAddress = async (uuid: string) => {
     return address
   }
   return undefined
+}
+
+// FIXME add expiration
+export const signIdentityRecord = async (uuid: string, userAddress: string, pkVerifier: string) => {
+  const argsPacked = await ethers.utils.solidityPack(['bytes32', 'address'], [uuid, userAddress])
+  const digest = keccak256(argsPacked)
+  const oracle = new ethers.utils.SigningKey(pkVerifier)
+  const signature = oracle.signDigest(digest)
+  const sigFlat = ethers.utils.joinSignature(signature)
+  return {
+    digest: digest,
+    signature: sigFlat
+  }
 }
